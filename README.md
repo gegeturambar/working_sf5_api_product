@@ -1,4 +1,7 @@
-# boilerplate api_platform project still has to add chmod -R 777 yet
+# boilerplate api_platform 
+
+
+launch : chmod -R 777 yet
 
 Once it's done, launch :
 php bin/console doctrine:migrations:migrate
