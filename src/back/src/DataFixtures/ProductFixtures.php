@@ -29,7 +29,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
             $product = new Product();
             $product->setName($fruit)->setPrice(rand(1,100))->setStock(rand(0,10))->setCategory($cat);
             $src = __DIR__.'/Resources/img.png';
-
+/*
             $file = new UploadedFile(
                 $src,
                 'animg.png',
@@ -38,7 +38,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
                 true // Set test mode true !!! " Local files are used in test mode hence the code should not enforce HTTP uploads."
             );
             $product->file = $file;
-
+*/
             $manager->persist($product);
         }
 
