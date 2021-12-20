@@ -2,16 +2,28 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Vich\UploaderBundle\Entity\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */
 #[ApiResource(
-    normalizationContext: ['groups' => ['products:read']]
+    normalizationContext: ['groups' => ['products:read']],
+    iri: 'http://schema.org/Product',
+    collectionOperations: [
+        'get',
+        'post' => [
+            'input_formats' => [
+                'multipart' => ['multipart/form-data'],
+            ],
+        ],
+    ],
 )]
 class Product
 {
@@ -40,6 +52,22 @@ class Product
      */
     #[Groups(["products:read"])]
     private $stock;
+
+
+    #[ApiProperty(iri: 'http://schema.org/contentUrl')]
+    #[Groups(['products:read'])]
+    public ?string $contentUrl = null;
+
+    /**
+     * @Vich\UploadableField(mapping="media_object", fileNameProperty="filePath")
+     */
+    #[Groups(['products:write'])]
+    public ?File $file = null;
+
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    public ?string $filePath = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
